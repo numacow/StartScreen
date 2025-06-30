@@ -67,25 +67,23 @@ public class StartScreen implements ModInitializer {
 
 						if (lastPlayed > serverUpTime) {
 							LOGGER.info("Player {} had time greater than server uptime {} did the server restart since last join?", player.getUUID(), serverUpTime);
-							playerTimeTracker.put(uuid, Long.MIN_VALUE);
 							lastPlayed = 0;
 						}
 
 						if ((serverUpTime - lastPlayed) >= TIMER_IN_MILLIS) {
 							LOGGER.debug("Player {} was offline for {} seconds", player.getUUID(), (serverUpTime - lastPlayed)/1000);
 							String command = "openguiscreen startscreen_start";
-
 							ParseResults<CommandSourceStack> results = commanddispatcher.parse(command, commandStack);
 							player.getServer().getCommands().performCommand(results, command);
 						}
 					}
 					else {
 						LOGGER.debug("New Player {}", player.getUUID());
-						playerTimeTracker.put(uuid, currentTimeMillis);
 						String command = "openguiscreen startscreen_start";
 						ParseResults<CommandSourceStack> results = commanddispatcher.parse(command, commandStack);
 						player.getServer().getCommands().performCommand(results, command);
 					}
+					playerTimeTracker.put(uuid, currentTimeMillis);
 				}
 			}
 			serverUpTime = currentTimeMillis;
